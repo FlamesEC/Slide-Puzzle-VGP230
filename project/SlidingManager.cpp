@@ -8,9 +8,36 @@ void SlidingManager::Start()
 
 void SlidingManager::Update()
 {
+	std::string lengthText = "";
+
 	switch (gameState)
 	{
+		case MENU:
+
+			if (IsKeyPressed(KEY_LEFT)) tileSideCount--;
+			if (IsKeyPressed(KEY_RIGHT)) tileSideCount++;
+
+			tileSideCount = Clamp(tileSideCount, MINIMUM_SIDE_SIZE, MAXIMUM_SIDE_SIZE);
+
+			DrawText("Block Puzzle", WINDOW_SIZE_X / 2 - MeasureText("Block Puzzle", 80) / 2, MENU_BLEED_Y, 80, RAYWHITE);
+			DrawText("LENGTH: ", MENU_BLEED_X, WINDOW_SIZE_Y - MENU_BLEED_Y - 40, 40, RAYWHITE);
+
+			if (tileSideCount > MINIMUM_SIDE_SIZE) lengthText += "<-  "; else lengthText += "    ";
+			lengthText += std::to_string(tileSideCount);
+			if (tileSideCount < MAXIMUM_SIDE_SIZE) lengthText += "  ->"; else lengthText += "    ";
+
+			DrawText(lengthText.c_str(), WINDOW_SIZE_X - MENU_BLEED_X - MeasureText(lengthText.c_str(), 40), WINDOW_SIZE_Y - MENU_BLEED_Y - 40, 40, RAYWHITE);
+
+			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+			{
+				Reset();
+				gameState = GAME;
+			}
+
+		break;
+
 		case GAME:
+
 			for (int y = 0; y < tileSideCount; y++)
 			{
 				for (int x = 0; x < tileSideCount; x++)
@@ -22,13 +49,15 @@ void SlidingManager::Update()
 					tile->Update();
 					tile->Draw();
 				}
-				std::cout << "\n";
 			}
 
 			DrawTimer();
 
 			if (!running)
 			{
+				if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+					gameState = MENU;
+
 				return;
 			}
 
@@ -57,7 +86,8 @@ void SlidingManager::Update()
 
 			if (GetSolved())
 				running = false;
-			break;
+
+		break;
 	}
 }
 
@@ -71,7 +101,7 @@ void SlidingManager::Main()
 	while (!WindowShouldClose())
 	{
 		BeginDrawing();
-		ClearBackground(BLANK);
+		ClearBackground(BLACK);
 
 		Update();
 
@@ -161,7 +191,7 @@ void SlidingManager::Shuffle()
 		SlidingTileHolder* holderA = grid[a % tileSideCount][floor(a / (float)tileSideCount)];
 		SlidingTileHolder* holderB = grid[b % tileSideCount][floor(b / (float)tileSideCount)];
 
-		holderA->ExchangeTileContents(holderB);
+		holderA->ExchangeTileContents(holderB, true);
 
 		a--;
 	}
@@ -171,9 +201,9 @@ void SlidingManager::Shuffle()
 		Vector2 emptyPos = GetEmptyPos();
 
 		if (emptyPos.y == 0 && emptyPos.x <= 1)
-			grid[tileSideCount - 2][tileSideCount - 1]->ExchangeTileContents(grid[tileSideCount - 1][tileSideCount - 1]);
+			grid[tileSideCount - 2][tileSideCount - 1]->ExchangeTileContents(grid[tileSideCount - 1][tileSideCount - 1], true);
 		else
-			grid[0][0]->ExchangeTileContents(grid[1][0]);
+			grid[0][0]->ExchangeTileContents(grid[1][0], true);
 	}
 
 	secondsInRound = 0;

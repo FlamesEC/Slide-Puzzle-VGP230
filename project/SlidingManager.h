@@ -12,6 +12,12 @@
 #define GRID_BLEED 100
 #define TIMER_BLEED 30
 
+#define MENU_BLEED_X 200
+#define MENU_BLEED_Y 280
+
+#define MINIMUM_SIDE_SIZE 3
+#define MAXIMUM_SIDE_SIZE 8
+
 enum GAME_STATES
 {
 	MENU,

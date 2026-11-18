@@ -24,6 +24,7 @@ public:
 	void Draw();
 
 	void SetPosition(Vector2 pos);
+	void ForcePosition();
 	int GetIndex();
 };
 
@@ -43,6 +44,6 @@ public:
 
 	bool GetCorrect();
 
-	void ExchangeTileContents(SlidingTileHolder* other);
+	void ExchangeTileContents(SlidingTileHolder* other, bool instant = false);
 	SlidingTile* GetSlidingTile();
 };

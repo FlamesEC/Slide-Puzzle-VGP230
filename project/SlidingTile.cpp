@@ -37,6 +37,11 @@ void SlidingTile::SetPosition(Vector2 pos)
 	targetPos = pos;
 }
 
+void SlidingTile::ForcePosition()
+{
+	currentPos = targetPos;
+}
+
 int SlidingTile::GetIndex()
 {
 	return index;
@@ -77,12 +82,20 @@ bool SlidingTileHolder::GetCorrect()
 	return currentTile != nullptr && currentTile->GetIndex() == index;
 }
 
-void SlidingTileHolder::ExchangeTileContents(SlidingTileHolder* other)
+void SlidingTileHolder::ExchangeTileContents(SlidingTileHolder* other, bool instant)
 {
 	if (currentTile != nullptr)
+	{
 		currentTile->SetPosition(other->position);
+		if (instant)
+			currentTile->ForcePosition();
+	}
 	if (other->currentTile != nullptr)
+	{
 		other->currentTile->SetPosition(position);
+		if (instant)
+			other->currentTile->ForcePosition();
+	}
 
 	SlidingTile* self = currentTile;
 	currentTile = other->currentTile;
