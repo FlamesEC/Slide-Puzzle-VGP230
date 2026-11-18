@@ -1,6 +1,6 @@
 #include "SlidingTile.h"
 
-SlidingTile::SlidingTile(Vector2 startPos, Vector2 size, std::string name, Color color, int index)
+SlidingTile::SlidingTile(Vector2 startPos, Vector2 size, std::string name, Color color, int index, int fontSize)
 {
 	this->currentPos = startPos;
 	this->targetPos = startPos;
@@ -8,6 +8,7 @@ SlidingTile::SlidingTile(Vector2 startPos, Vector2 size, std::string name, Color
 	this->name = name;
 	this->color = color;
 	this->index = index;
+	this->fontSize = fontSize;
 }
 
 Rectangle SlidingTile::GetTileRect()
@@ -29,7 +30,7 @@ void SlidingTile::Update()
 void SlidingTile::Draw()
 {
 	DrawRectangleRounded(Rectangle{ currentPos.x + TILE_BLEED, currentPos.y + TILE_BLEED, size.x - TILE_BLEED * 2, size.y - TILE_BLEED * 2 }, 0.2f, 6, color);
-	DrawText(name.c_str(), currentPos.x + (size.x / 2.0f) - (MeasureText(name.c_str(), 50) / 2), currentPos.y + (size.y / 2.0f) - 25, 50, BLACK);
+	DrawText(name.c_str(), currentPos.x + (size.x / 2.0f) - (MeasureText(name.c_str(), fontSize) / 2), currentPos.y + (size.y / 2.0f) - (fontSize / 2), fontSize, BLACK);
 }
 
 void SlidingTile::SetPosition(Vector2 pos)
@@ -61,9 +62,9 @@ SlidingTileHolder::SlidingTileHolder(Vector2 pos, int index)
 	this->index = index;
 }
 
-SlidingTileHolder::SlidingTileHolder(Vector2 pos, Vector2 size, std::string name, Color color, int index)
+SlidingTileHolder::SlidingTileHolder(Vector2 pos, Vector2 size, std::string name, Color color, int index, int fontSize)
 {
-	currentTile = new SlidingTile(pos, size, name, color, index);
+	currentTile = new SlidingTile(pos, size, name, color, index, fontSize);
 	position = pos;
 	this->index = index;
 }

@@ -170,7 +170,8 @@ void SlidingManager::Reset()
 					{ tileWidth, tileHeight },
 					std::to_string(index + 1),
 					ORANGE,
-					index
+					index,
+					TILE_DEFAULT_FONT_SIZE + ((4 - tileSideCount) * TILE_INCREMENT_FONT_SIZE)
 				);
 			else
 				grid[x][y] = new SlidingTileHolder({ GRID_BLEED + tileWidth * x, GRID_BLEED + tileWidth * y + TIMER_BLEED }, -1);

@@ -13,11 +13,12 @@ class SlidingTile
 	std::string name;
 	Color color;
 
+	int fontSize;
 	int index;
 
 public:
 
-	SlidingTile(Vector2 startPos, Vector2 size, std::string name, Color color, int index);
+	SlidingTile(Vector2 startPos, Vector2 size, std::string name, Color color, int index, int fontSize);
 	Rectangle GetTileRect();
 
 	void Update();
@@ -38,7 +39,7 @@ public:
 	
 	SlidingTileHolder();
 	SlidingTileHolder(Vector2 pos, int index);
-	SlidingTileHolder(Vector2 pos, Vector2 size, std::string name, Color color, int index);
+	SlidingTileHolder(Vector2 pos, Vector2 size, std::string name, Color color, int index, int fontSize);
 
 	~SlidingTileHolder();
 
