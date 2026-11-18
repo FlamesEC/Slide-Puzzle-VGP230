@@ -1,0 +1,49 @@
+#pragma once
+
+#include <vector>
+#include <algorithm>
+#include <iostream>
+
+#include "SlidingTile.h"
+
+#define WINDOW_SIZE_X 800
+#define WINDOW_SIZE_Y 800
+
+#define GRID_BLEED 100
+#define TIMER_BLEED 30
+
+enum GAME_STATES
+{
+	MENU,
+	GAME
+};
+
+class SlidingManager
+{
+	std::vector<std::vector<SlidingTileHolder*>> grid;
+	float secondsInRound = 0;
+	bool running = false;
+
+	int tileSideCount = 4;
+	GAME_STATES gameState = MENU;
+
+	void Start();
+	void Update();
+
+public:
+
+	void Main();
+
+	SlidingTileHolder* GetEmptyNeighboringTile(int x, int y);
+	void Reset();
+	void Shuffle();
+
+	int CountInversions(int x, int y);
+	int SumInversions();
+	
+	bool IsSolvable();
+	Vector2 GetEmptyPos();
+	bool GetSolved();
+
+	void DrawTimer();
+};
